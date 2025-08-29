@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+        <meta charset="utf-8" />
+        <title>Staff/Teacher Dashboard </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content=" " name="description" />
+        <meta content="" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- plugin css -->
+        <link href="{{ asset('assets/tutor/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}" rel="stylesheet" type="text/css" />
+		        <!-- DataTables -->
+        <link href="{{ asset('assets/tutor/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('assets/tutor/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+        <!-- Responsive datatable examples -->
+        <link href="{{ asset('assets/tutor/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" /> 
+
+        <!-- preloader css -->
+        <link rel="stylesheet" href="{{ asset('assets/tutor/css/preloader.min.css') }}" type="text/css" />
+
+        <!-- Bootstrap Css -->
+        <link href="{{ asset('assets/tutor/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="{{ asset('assets/tutor/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="{{ asset('assets/tutor/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body data-topbar="dark">
+
+    <!-- <body data-layout="horizontal"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            
+            <header id="page-topbar">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <!-- LOGO -->
+                        <div class="navbar-brand-box">
+                            <a href="{{ url('tutor/dashboard') }}" class="logo logo-dark">
+                                <span class="logo-sm">
+                                    <img src="{{ asset('assets/tutor/images/logo-sm.svg') }}" alt="" height="30">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="{{ asset('assets/tutor/images/logo-sm.svg') }}" alt="" height="24"> <span class="logo-txt">Tutor</span>
+                                </span>
+                            </a>
+
+                            <a href="{{ url('tutor/dashboard') }}" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="{{ asset('assets/tutor/images/logo-sm.svg') }}" alt="" height="30">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="{{ asset('assets/tutor/images/logo-sm.svg') }}" alt="" height="24"> <span class="logo-txt">Tutor</span>
+                                </span>
+                            </a>
+                        </div>
+
+                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+
+                        <!-- App Search-->
+                        <!-- <form class="app-search d-none d-lg-block">
+                            <div class="position-relative">
+                                <input type="search" class="form-control" placeholder="Search...">
+                                <button class="btn btn-primary" type="button"><i class="bx bx-search-alt align-middle"></i></button>
+                            </div>
+                        </form> -->
+                    </div>
+
+                    <div class="d-flex">
+
+                        <div class="dropdown d-inline-block d-lg-none ms-2">
+                            <button type="button" class="btn header-item" id="page-header-search-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="search" class="icon-lg"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                                aria-labelledby="page-header-search-dropdown">
+        
+                                <form class="p-3">
+                                    <div class="form-group m-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Search Result">
+
+                                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                       
+
+                        <div class="dropdown d-none d-sm-inline-block">
+                            <button type="button" class="btn header-item" id="mode-setting-btn">
+                                <i data-feather="moon" class="icon-lg layout-mode-dark"></i>
+                                <i data-feather="sun" class="icon-lg layout-mode-light"></i>
+                            </button>
+                        </div>                 
+                        @php
+                            use App\Models\Tutor;
+                            $id=session('tutor_id');
+                            $tutor=Tutor::where('id',$id)->first();
+
+                            $tutornotifications = $tutor 
+                                ? $tutor->unreadNotifications   
+                                : collect();
+                            
+
+                            
+
+                            
+                        @endphp    
+
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item noti-icon position-relative" id="page-header-notifications-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="bell" class="icon-lg"></i>
+                                <span class="badge bg-success rounded-pill">{{ $tutornotifications->count() }}</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                                aria-labelledby="page-header-notifications-dropdown">
+                                <div class="p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h6 class="m-0"> Notifications </h6>
+                                        </div>
+                                        <div class="col-auto">
+                                            <!-- <a href="#!" class="small text-reset text-decoration-underline"> Unread (3)</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-simplebar style="max-height: 230px;">
+                                @if($tutornotifications->count() > 0)
+                                    @foreach($tutornotifications as $notification)
+
+                                    <a href="#!" class="text-reset notification-item">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1">
+                                                <!-- <h6 class="mb-1">James Lemire</h6> -->
+                                                <div class="font-size-13 text-muted">
+                                                    <p class="mb-1">{{ $notification->data['message'] ?? 'No message' }}</p>
+                                                    <p class="mb-0 text-danger" style="font-size: 10px;"><i class="mdi mdi-clock-outline"></i> <span>{{ $notification->created_at->diffForHumans() }}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    @endforeach
+                                @else
+                                    <p>No notifications found.</p>
+                                @endif
+
+                                </div>
+                                <div class="p-2 border-top d-grid">
+                                    <a class="btn btn-sm btn-link font-size-14 text-center" href="{{ url('tutor/notification') }}">
+                                        <i class="mdi mdi-arrow-right-circle me-1"></i> <span>View More..</span> 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item bg-light-subtle border-start border-end" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               @if($tutor && $tutor->profile_picture)
+                                    <img class="rounded-circle header-profile-user"
+                                        src="{{ asset('uploads/tutor/'.$tutor->profile_picture) }}"
+                                        alt="Header Avatar">
+                                @else
+                                    <img class="rounded-circle header-profile-user"
+                                        src="{{ asset('assets/backend/img/user.jpg') }}"
+                                        alt="Header Avatar">
+                                @endif
+
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium">{{ $tutor->name }}</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <a class="dropdown-item" href="{{ url('tutor/profile') }}"><i class="mdi mdi-face-profile font-size-16 align-middle me-1"></i> Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ url('tutor/logout') }}"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="vertical-menu">
+
+                <div data-simplebar class="h-100">
+
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <!-- Left Menu Start -->
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title mb-3" data-key="t-menu">Menu</li>
+                            <li>
+                                <a href="{{ url('tutor/dashboard') }}">
+                                    <i data-feather="home"></i>
+                                    <span data-key="t-dashboard">Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('tutor/course') }}" class="">
+                                    <i data-feather="award"></i>
+                                    <span data-key="t-ecommerce">Course</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('tutor/availability') }}" class="">
+                                    <i data-feather="calendar"></i>
+                                    <span data-key="t-ecommerce">Availability</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('tutor/student') }}" class="">
+                                    <i data-feather="user"></i>
+                                    <span data-key="t-ecommerce">Student</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('tutor/session') }}" class="">
+                                    <i data-feather="mail"></i>
+                                    <span data-key="t-ecommerce">Session and Payment</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('tutor/change') }}" class="">
+                                    <i data-feather="eye"></i>
+                                    <span data-key="t-ecommerce">Change Password</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Sidebar -->
+                </div>
+            </div>
+            <!-- Left Sidebar End -->
+			 <div class="main-content">
+                
