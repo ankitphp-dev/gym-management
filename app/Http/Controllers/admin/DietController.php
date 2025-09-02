@@ -50,7 +50,16 @@ class DietController extends Controller
             $imageName  = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('uploads/workouts'), $imageName);
         }
+<<<<<<< HEAD
         
+=======
+
+
+
+
+        
+
+>>>>>>> ff3c453cc4566d3254aee38467ff1a3b00c1282f
         $workout = new Workout();
         $workout->workout_name  = $request->workout_name;
         $workout->category_name = $request->category_name;
