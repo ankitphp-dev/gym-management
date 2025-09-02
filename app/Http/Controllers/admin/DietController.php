@@ -51,6 +51,8 @@ class DietController extends Controller
             $image->move(public_path('uploads/workouts'), $imageName);
         }
 
+
+        
         $workout = new Workout();
         $workout->workout_name  = $request->workout_name;
         $workout->category_name = $request->category_name;
