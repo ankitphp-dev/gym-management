@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="card-body">
-                            <form action="{{ url('admin/diet/store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('diets.new') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <!-- Diet Name -->
                                 <div class="mb-3">
@@ -74,15 +74,17 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select id="status" name="status" class="form-select" required>
-                                        <option value="Active" selected>Active</option>
-                                        <option value="Inactive">Inactive</option>
+                                        <option value="">-- Select Status --</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
                                 </div>
 
                                 <!-- Submit -->
-                                <div class="     d-flex gap-2">
+                                <div class="d-flex gap-2">
                                     <button type="submit" class="btn"
                                         style="background-color:#fd7e14; color:white;">Save </button>
+
                                     <!-- <a href="{{ url('admin/diet/list') }}" class="btn btn-secondary">Cancel</a> -->
                                 </div>
                             </form>

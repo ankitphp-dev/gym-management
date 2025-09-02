@@ -32,7 +32,7 @@
                             <h5 class="card-title m-0">Add New Workout</h5>
                         </div>
                         <div class="card-body">
-                            <form action="{{url('admin/workout/store')}}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('workout.new')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row g-3">
 
@@ -40,37 +40,47 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Workout Name <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="workout_name" class="form-control" required
+                                        <input type="text" name="workout_name" value="{{ old('workout_name') }}" class="form-control" required
                                             placeholder="Enter workout name">
+                                        @error('workout_name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror    
                                     </div>
 
                                     <!-- Workout Category -->
                                     <div class="col-md-6">
                                         <label class="form-label">Category <span class="text-danger">*</span></label>
-                                        <select name="category" class="form-select" required>
-                                            <option value="">-- Select Category --</option>
-                                            <option value="Strength">Strength</option>
-                                            <option value="Cardio">Cardio</option>
-                                            <option value="Flexibility">Flexibility</option>
-                                            <option value="Endurance">Endurance</option>
-                                        </select>
+                                        <input type="text" class="form-control" name="category_name" value="{{ old('category_name') }}" placeholder="Enter Category Name" required>
+                                    
+                                        @error('category_name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
+
 
                                     <!-- Workout Duration -->
                                     <div class="col-md-6">
-                                        <label class="form-label">Duration (in minutes) <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label">Duration<span
+                                            class="text-danger"> (in minutes) *</span></label>
                                         <input type="number" name="duration" class="form-control" required
                                             placeholder="e.g. 30">
+                                        @error('duration')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror    
                                     </div>
 
                                     <!-- Workout Status -->
                                     <div class="col-md-6">
                                         <label class="form-label">Status <span class="text-danger">*</span></label>
                                         <select name="status" class="form-select" required>
-                                            <option value="Active">Active</option>
-                                            <option value="Inactive">Inactive</option>
+                                            <option value="">-- Select Status --</option>
+                                            <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                            <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                         </select>
+                                       
+                                        @error('status')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <!-- Workout Image -->
@@ -79,6 +89,9 @@
                                                 class="text-danger">*</span></label>
                                         <input type="file" name="workout_image" class="form-control" accept="image/*"
                                             required>
+                                        @error('workout_image')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror    
                                     </div>
 
                                     <!-- Submit Button -->

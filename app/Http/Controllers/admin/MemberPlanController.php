@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MembershipPlan;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Event\Telemetry\MemoryMeter;
 
 class MemberPlanController extends Controller
 {
-       public function list(){
-        return view('admin.plan.list');
+    public function list() {
+        $membership = MembershipPlan::paginate(10);
+        return view('admin.plan.list', compact('membership'));
     }
+
      public function Add(){
         return view('admin.plan.add');
     }
@@ -28,19 +31,24 @@ class MemberPlanController extends Controller
             'description' => 'nullable|string',
         ];
 
-        // Step 2: Run Validator
         $validator = Validator::make($request->all(), $rules);
 
-        // Step 3: If Validation Fails
         if ($validator->fails()) {
             return redirect()->back()
-                ->withErrors($validator)   // errors ko session me store karega
-                ->withInput();             // old() values preserve karega
+                ->withErrors($validator)  
+                ->withInput();         
         }
-
-        // Step 4: If Validation Passes → Save Plan
         MembershipPlan::create($validator->validated());
 
-        return redirect()->back()->with('success', 'New plan added successfully!');
+        return redirect()->route('plan.list')->with('success', 'New plan added successfully!');
     }
+
+
+public function deletePlan($id)
+{
+    $memberPlan = MembershipPlan::findOrFail($id);
+    $memberPlan->delete();
+    return redirect()->route('plan.list')->with('danger', 'Membership plan deleted successfully.');
+}
+
 }

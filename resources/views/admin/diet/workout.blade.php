@@ -7,7 +7,20 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-12 col-md-6">
-                     <h5 class="mb-0 " style="color:black;">Workout Management</h5>
+                    <h5 class="mb-0 " style="color:black;">Workout Management</h5>
+                    @if(session('success'))
+                        <div id="success-message" class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                        <script>
+                            setTimeout(function() {
+                                var msg = document.getElementById('success-message');
+                                if(msg){
+                                    msg.style.display = 'none';
+                                }
+                            }, 3000);
+                        </script>
+                    @endif
                 </div>
                 <div class="col-12 col-md-6 mt-2 mt-md-0">
                     <ol class="breadcrumb float-md-end mb-0">
@@ -35,73 +48,51 @@
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover align-middle mb-0">
-                            <thead class="table-dark">
+                            <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Workout Image</th>
+                                    <th>ID</th>
                                     <th>Workout Name</th>
                                     <th>Category</th>
                                     <th>Duration</th>
                                     <th>Status</th>
-                                    <th class="text-center">Actions</th>
+                                    <th>Image</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <img src="{{asset('assets/admin/img/download (2).jfif')}}" 
-                                             class="rounded" width="60" height="60" alt="Workout Image">
-                                    </td>
-                                    <td>Push Ups</td>
-                                    <td>Strength</td>
-                                    <td>15 mins</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-group-sm flex-wrap">
-                                            <button class="btn btn-info mb-1">View</button>
-                                            <button class="btn btn-warning mb-1">Edit</button>
-                                            <button class="btn btn-danger mb-1">Delete</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <img src="{{asset('assets/admin/img/download (3).jfif')}}" 
-                                             class="rounded" width="60" height="60" alt="Workout Image">
-                                    </td>
-                                    <td>Running</td>
-                                    <td>Cardio</td>
-                                    <td>30 mins</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-group-sm flex-wrap">
-                                            <button class="btn btn-info mb-1">View</button>
-                                            <button class="btn btn-warning mb-1">Edit</button>
-                                            <button class="btn btn-danger mb-1">Delete</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <img src="{{asset('assets/admin/img/Yoga-Pastel-Sun.webp')}}" 
-                                             class="rounded" width="60" height="60" alt="Workout Image">
-                                    </td>
-                                    <td>Yoga</td>
-                                    <td>Flexibility</td>
-                                    <td>45 mins</td>
-                                    <td><span class="badge bg-danger">Inactive</span></td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-group-sm flex-wrap">
-                                            <button class="btn btn-info mb-1">View</button>
-                                            <button class="btn btn-warning mb-1">Edit</button>
-                                            <button class="btn btn-danger mb-1">Delete</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- aur workouts yaha add kar sakte ho -->
+                                @forelse($workout as $item)
+                                    <tr>
+                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->workout_name }}</td>
+                                        <td>{{ $item->category_name }}</td>
+                                        <td>{{ $item->duration }} minutes</td>
+                                        <td>
+                                            <span class="badge {{ $item->status == 'Active' ? 'bg-success' : 'bg-danger' }}">
+                                                {{ ucfirst($item->status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if($item->workout_image)
+                                                <img src="{{ asset('/public/uploads/workouts/'.$item->workout_image) }}" width="80">
+                                            @else
+                                                No Image
+                                            @endif
+                                        </td>
+                                        <td> 
+                                            <a href="#" class="btn btn-warning">
+                                                Edit
+                                            </a> |
+                                            <a href="{{ route('delete.workout', $item->id) }}" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure you want to delete this workout?')">
+                                                Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">No workouts found</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
